@@ -16,6 +16,10 @@
   library(glamr)
   library(scales)
 
+
+# LOAD DATA and PARSE -----------------------------------------------------
+
+
   #From: https://taraskaduk.com/posts/2019-03-23-apple-health/
   # Grab latest transfer
   health <- glamr::return_latest("../../../Downloads", 
@@ -26,6 +30,11 @@
   
   # PARSE XML
   df <- XML:::xmlAttrsToDataFrame(xml["//Record"])
+  
+  
+
+# MUNGE -------------------------------------------------------------------
+
   
   steps <- df %>% 
     mutate(across(everything(), as.character),
@@ -63,7 +72,12 @@
     summarise(steps = sum(steps)) %>% 
     mutate(total = sum(steps))
 
+ 
   
+
+# EDA ---------------------------------------------------------------------
+
+   
   steps %>% 
     filter(type == "miles") %>% 
     group_by(month_year) %>% 
